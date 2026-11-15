@@ -108,7 +108,9 @@ class TestLayerLens:
             layer_name="test_layer",
             input_dim=100,
             output_dim=200,
-            rank=50
+            rank=50,
+            effective_rank=42.0,
+            compression_ratio=2.0
         )
         
         lens = LayerLens(

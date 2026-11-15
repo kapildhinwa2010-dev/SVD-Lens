@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SVD-Lens"
+version = "1.0.0"
+description = "SVD-based Lens for Neural Network Layer Analysis"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Kapil Dhinwa", email = "kapildhinwa2010@gmail.com"}
+]
+keywords = [
+    "pytorch",
+    "neural-networks",
+    "svd",
+    "analysis",
+    "bottleneck",
+    "layer",
+    "compression",
+    "deep-learning"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "pytest-cov>=4.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/kapildhinwa2010-dev/SVD-Lens"
+Documentation = "https://github.com/kapildhinwa2010-dev/SVD-Lens#readme"
+Repository = "https://github.com/kapildhinwa2010-dev/SVD-Lens.git"
+Issues = "https://github.com/kapildhinwa2010-dev/SVD-Lens/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["svd_lens*"]
+
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["svd_lens"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]

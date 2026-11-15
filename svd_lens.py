@@ -254,8 +254,11 @@ class SVDLens:
         model.eval()
         with torch.no_grad():
             for _ in range(self.num_samples):
-                device_inputs = {k: v.to(self.device) for k, v in inputs.items()}
-                model(**device_inputs)
+                if isinstance(inputs, dict):
+                    device_inputs = {k: v.to(self.device) for k, v in inputs.items()}
+                    model(**device_inputs)
+                else:
+                    model(inputs.to(self.device))
         
         # Remove hook
         for h in self._hooks:
@@ -434,9 +437,11 @@ class SVDLensHook:
         self.window_size = window_size
         self._activations: List[torch.Tensor] = []
         self._hook: Optional[torch.utils.hooks.RemovableHandle] = None
-    
+        self._module_name: str = 'unknown'
+
     def attach(self, module: nn.Module) -> None:
         """Attach hook to module."""
+        self._module_name = str(module)
         self._hook = module.register_forward_hook(self._hook_fn)
     
     def _hook_fn(self, module, inp, out) -> None:
@@ -465,7 +470,7 @@ class SVDLensHook:
         # Store result
         self.lens._lenses[self.layer_idx] = LayerLens(
             layer_idx=self.layer_idx,
-            layer_name=str(module),
+            layer_name=self._module_name,
             svd_result=svd_result,
             activation_stats={
                 'mean': float(stacked.mean().item()),
